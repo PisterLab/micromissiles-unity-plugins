@@ -1,0 +1,6 @@
+module(name = "micromissiles-unity-plugin")
+
+bazel_dep(
+    name = "rules_cc",
+    version = "0.1.1",
+)
