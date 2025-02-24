@@ -4,7 +4,7 @@ package(default_visibility = ["//visibility:public"])
 
 cc_shared_library(
     name = "example",
-    deps = ["//example"],
+    deps = ["//example:example_plugin"],
 )
 
 pkg_tar(
