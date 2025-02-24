@@ -1,6 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_shared_library(
-    name = "hello_world",
-    deps = ["//hello_world"],
+    name = "example",
+    deps = ["//example"],
 )
