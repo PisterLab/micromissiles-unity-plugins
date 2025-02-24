@@ -1,9 +1,8 @@
-#include "assignment/covered_assignment.h"
+#include "assignment/cover_assignment.h"
 
 #include <stdexcept>
 #include <vector>
 
-#include "absl/strings/str_format.h"
 #include "assignment/assignment.h"
 #include "base/logging.h"
 #include "ortools/sat/cp_model.h"
@@ -12,7 +11,7 @@
 
 namespace assignment {
 
-std::vector<Assignment::AssignmentItem> CoveredAssignment::Assign() const {
+std::vector<Assignment::AssignmentItem> CoverAssignment::Assign() const {
   // Create the constraint programming model.
   operations_research::sat::CpModelBuilder cp_model;
 
@@ -38,16 +37,18 @@ std::vector<Assignment::AssignmentItem> CoveredAssignment::Assign() const {
   if (num_agents_ >= num_tasks_) {
     for (int j = 0; j < num_tasks_; ++j) {
       std::vector<operations_research::sat::BoolVar> tasks;
+      tasks.reserve(num_agents_);
       for (int i = 0; i < num_agents_; ++i) {
-        tasks.push_back(x[i][j]);
+        tasks.emplace_back(x[i][j]);
       }
       cp_model.AddAtLeastOne(tasks);
     }
   } else {
     for (int j = 0; j < num_tasks_; ++j) {
       std::vector<operations_research::sat::BoolVar> tasks;
+      tasks.reserve(num_agents_);
       for (int i = 0; i < num_agents_; ++i) {
-        tasks.push_back(x[i][j]);
+        tasks.emplace_back(x[i][j]);
       }
       cp_model.AddAtMostOne(tasks);
     }
@@ -69,7 +70,7 @@ std::vector<Assignment::AssignmentItem> CoveredAssignment::Assign() const {
   // Check the feasibility of the solution.
   if (response.status() ==
       operations_research::sat::CpSolverStatus::INFEASIBLE) {
-    LOG(ERROR) << "Covered assignment problem is infeasible.";
+    LOG(ERROR) << "Cover assignment problem is infeasible.";
     return std::vector<AssignmentItem>();
   }
 

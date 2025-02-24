@@ -1,4 +1,4 @@
-#include "assignment/covered_assignment.h"
+#include "assignment/cover_assignment.h"
 
 #include <gtest/gtest.h>
 
@@ -10,17 +10,18 @@
 namespace assignment {
 namespace {
 
-TEST(CoveredAssignmentTest, AssignUnique) {
+TEST(CoverAssignmentTest, AssignUnique) {
   constexpr int kNumAgents = 5;
   constexpr int kNumTasks = 4;
   const std::vector<std::vector<double>> costs{
       {90, 80, 75, 70},   {35, 85, 55, 65},   {125, 95, 90, 95},
       {45, 110, 95, 115}, {50, 100, 90, 100},
   };
-  CoveredAssignment assignment(kNumAgents, kNumTasks, costs);
+  CoverAssignment assignment(kNumAgents, kNumTasks, costs);
   const auto assignments = assignment.Assign();
   std::unordered_map<int, int> expected_assignments{
-      {0, 3}, {1, 2}, {2, 1}, {3, 0}, {4, 0}};
+      {0, 3}, {1, 2}, {2, 1}, {3, 0}, {4, 0},
+  };
   EXPECT_EQ(assignments.size(), expected_assignments.size());
   for (const auto& [agent_index, task_index] : assignments) {
     EXPECT_EQ(expected_assignments[agent_index], task_index)
@@ -29,17 +30,17 @@ TEST(CoveredAssignmentTest, AssignUnique) {
   }
 }
 
-TEST(CoveredAssignmentTest, AssignMultiple) {
-  constexpr int kNumAgents = 3;
+TEST(CoverAssignmentTest, AssignMultiple) {
+  constexpr int kNumAgents = 5;
   constexpr int kNumTasks = 2;
   const std::vector<std::vector<double>> costs{
-      {1, 3},
-      {4, 3},
-      {2, 2},
+      {1, 3}, {5, 1}, {4, 2}, {6, 1}, {7, 1},
   };
-  CoveredAssignment assignment(kNumAgents, kNumTasks, costs);
+  CoverAssignment assignment(kNumAgents, kNumTasks, costs);
   const auto assignments = assignment.Assign();
-  std::unordered_map<int, int> expected_assignments{{0, 0}, {1, 1}, {2, 1}};
+  std::unordered_map<int, int> expected_assignments{
+      {0, 0}, {1, 1}, {2, 1}, {3, 1}, {4, 1},
+  };
   EXPECT_EQ(assignments.size(), expected_assignments.size());
   for (const auto& [agent_index, task_index] : assignments) {
     EXPECT_EQ(expected_assignments[agent_index], task_index)
@@ -48,16 +49,19 @@ TEST(CoveredAssignmentTest, AssignMultiple) {
   }
 }
 
-TEST(CoveredAssignmentTest, AssignFewer) {
+TEST(CoverAssignmentTest, AssignFewer) {
   constexpr int kNumAgents = 2;
   constexpr int kNumTasks = 3;
   const std::vector<std::vector<double>> costs{
       {3, 0, 2},
       {4, 2, 3},
   };
-  CoveredAssignment assignment(kNumAgents, kNumTasks, costs);
+  CoverAssignment assignment(kNumAgents, kNumTasks, costs);
   const auto assignments = assignment.Assign();
-  std::unordered_map<int, int> expected_assignments{{0, 1}, {1, 2}};
+  std::unordered_map<int, int> expected_assignments{
+      {0, 1},
+      {1, 2},
+  };
   EXPECT_EQ(assignments.size(), expected_assignments.size());
   for (const auto& [agent_index, task_index] : assignments) {
     EXPECT_EQ(expected_assignments[agent_index], task_index)
