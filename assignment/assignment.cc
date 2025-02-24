@@ -1,5 +1,6 @@
 #include "assignment/assignment.h"
 
+#include <cstddef>
 #include <stdexcept>
 #include <vector>
 
@@ -9,7 +10,7 @@ namespace assignment {
 
 void Assignment::ValidateCosts() const {
   // Validate the first dimension of the cost matrix.
-  if (costs_.size() != num_agents_) {
+  if (costs_.size() != static_cast<std::size_t>(num_agents_)) {
     throw std::invalid_argument(
         absl::StrFormat("The assignment cost matrix has an incorrect number of "
                         "rows: %d vs. %d.",
@@ -18,7 +19,7 @@ void Assignment::ValidateCosts() const {
 
   // Validate the second dimension of the cost matrix.
   for (const auto& row : costs_) {
-    if (row.size() != num_tasks_) {
+    if (row.size() != static_cast<std::size_t>(num_tasks_)) {
       throw std::invalid_argument(
           absl::StrFormat("The assignment cost matrix has an incorrect number "
                           "of columns: %d vs. %d.",
