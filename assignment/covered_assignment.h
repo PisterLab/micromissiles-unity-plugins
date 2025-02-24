@@ -21,10 +21,6 @@ class CoveredAssignment : public Assignment {
 
   // Assign the agents to the tasks.
   std::vector<AssignmentItem> Assign() const override;
-
- protected:
-  // Validate the assignment problem.
-  void Validate() const override;
 };
 
 }  // namespace assignment

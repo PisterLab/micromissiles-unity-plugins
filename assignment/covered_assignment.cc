@@ -32,13 +32,25 @@ std::vector<Assignment::AssignmentItem> CoveredAssignment::Assign() const {
   for (int i = 0; i < num_agents_; ++i) {
     cp_model.AddExactlyOne(x[i]);
   }
-  // Each task is assigned to at least one agent.
-  for (int j = 0; j < num_tasks_; ++j) {
-    std::vector<operations_research::sat::BoolVar> tasks;
-    for (int i = 0; i < num_agents_; ++i) {
-      tasks.push_back(x[i][j]);
+  // If there are at least as many agents as tasks, each task is assigned to at
+  // least one agent. Otherwise, no more than one agent should be assigned to
+  // any task.
+  if (num_agents_ >= num_tasks_) {
+    for (int j = 0; j < num_tasks_; ++j) {
+      std::vector<operations_research::sat::BoolVar> tasks;
+      for (int i = 0; i < num_agents_; ++i) {
+        tasks.push_back(x[i][j]);
+      }
+      cp_model.AddAtLeastOne(tasks);
     }
-    cp_model.AddAtLeastOne(tasks);
+  } else {
+    for (int j = 0; j < num_tasks_; ++j) {
+      std::vector<operations_research::sat::BoolVar> tasks;
+      for (int i = 0; i < num_agents_; ++i) {
+        tasks.push_back(x[i][j]);
+      }
+      cp_model.AddAtMostOne(tasks);
+    }
   }
 
   // Define the objective function.
@@ -73,15 +85,6 @@ std::vector<Assignment::AssignmentItem> CoveredAssignment::Assign() const {
     }
   }
   return assignments;
-}
-
-void CoveredAssignment::Validate() const {
-  // Check that there are at least as many agents as tasks to cover all tasks.
-  if (num_agents_ < num_tasks_) {
-    throw std::invalid_argument(
-        absl::StrFormat("There are fewer agents than tasks: %d vs. %d.",
-                        num_agents_, num_tasks_));
-  }
 }
 
 }  // namespace assignment
