@@ -4,9 +4,19 @@ on: push
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
       - uses: bazel-contrib/setup-bazel@0.9.1
       - run: bazel build //...
       # - run: bazel test --test_output=errors //...
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugins-${{ matrix.targetPlatform }}
+          path: bazel-bin/plugins.tar.gz
