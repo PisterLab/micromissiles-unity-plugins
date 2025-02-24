@@ -1,0 +1,31 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "assignment",
+    srcs = ["assignment.cc"],
+    hdrs = ["assignment.h"],
+    deps = ["@com_google_absl//absl/strings:str_format"],
+)
+
+cc_library(
+    name = "covered_assignment",
+    srcs = ["covered_assignment.cc"],
+    hdrs = ["covered_assignment.h"],
+    deps = [
+        ":assignment",
+        "//base:logging",
+        "@com_google_absl//absl/strings:str_format",
+        "@ortools//ortools/sat:cp_model",
+    ],
+)
+
+cc_test(
+    name = "covered_assignment_test",
+    srcs = ["covered_assignment_test.cc"],
+    deps = [
+        ":assignment",
+        ":covered_assignment",
+        "@com_google_googletest//:gtest",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
