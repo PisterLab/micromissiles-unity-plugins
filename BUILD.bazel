@@ -3,6 +3,11 @@ load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 package(default_visibility = ["//visibility:public"])
 
 cc_shared_library(
+    name = "assignment",
+    deps = ["//assignment:assignment_plugin"],
+)
+
+cc_shared_library(
     name = "example",
     deps = ["//example:example_plugin"],
 )
@@ -10,6 +15,7 @@ cc_shared_library(
 pkg_tar(
     name = "plugins",
     srcs = [
+        ":assignment",
         ":example",
     ],
     extension = ".tar.gz",
