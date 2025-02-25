@@ -20,7 +20,6 @@ class Assignment {
       : num_agents_(num_agents),
         num_tasks_(num_tasks),
         costs_(std::move(costs)) {
-    Validate();
     ValidateCosts();
   }
 
@@ -33,9 +32,6 @@ class Assignment {
   virtual std::vector<AssignmentItem> Assign() const = 0;
 
  protected:
-  // Validate the assignment problem.
-  virtual void Validate() const {};
-
   // Number of agents.
   int num_agents_ = 0;
 

@@ -1,7 +1,11 @@
-#include "assignment/even_assignment.h"
+#include "assignment/weighted_even_assignment.h"
 
+#include <cstddef>
+#include <cstdint>
+#include <stdexcept>
 #include <vector>
 
+#include "absl/strings/str_format.h"
 #include "assignment/assignment.h"
 #include "base/logging.h"
 #include "ortools/sat/cp_model.h"
@@ -10,7 +14,7 @@
 
 namespace assignment {
 
-std::vector<Assignment::AssignmentItem> EvenAssignment::Assign() const {
+std::vector<Assignment::AssignmentItem> WeightedEvenAssignment::Assign() const {
   // Create the constraint programming model.
   operations_research::sat::CpModelBuilder cp_model;
 
@@ -35,7 +39,7 @@ std::vector<Assignment::AssignmentItem> EvenAssignment::Assign() const {
   for (int i = 0; i < num_agents_; ++i) {
     cp_model.AddExactlyOne(x[i]);
   }
-  // Distribute the agents evenly among the tasks.
+  // Distribute the agents evenly among the tasks under the task weights.
   std::vector<operations_research::sat::LinearExpr> task_sums;
   task_sums.reserve(num_tasks_);
   for (int j = 0; j < num_tasks_; ++j) {
@@ -44,11 +48,15 @@ std::vector<Assignment::AssignmentItem> EvenAssignment::Assign() const {
     for (int i = 0; i < num_agents_; ++i) {
       tasks.emplace_back(x[i][j]);
     }
-    task_sums.emplace_back(operations_research::sat::LinearExpr::Sum(tasks));
+    const int64_t task_weight =
+        static_cast<int64_t>(weights_[j] * weight_scaling_factor_);
+    task_sums.emplace_back(operations_research::sat::LinearExpr::Sum(tasks) *
+                           task_weight);
   }
   cp_model.AddMinEquality(min_task_assignments, task_sums);
   cp_model.AddMaxEquality(max_task_assignments, task_sums);
-  cp_model.AddLessOrEqual(max_task_assignments - min_task_assignments, 1);
+  cp_model.AddLessOrEqual(max_task_assignments - min_task_assignments,
+                          weight_scaling_factor_);
 
   // Define the objective function.
   operations_research::sat::DoubleLinearExpr total_cost;
@@ -82,6 +90,16 @@ std::vector<Assignment::AssignmentItem> EvenAssignment::Assign() const {
     }
   }
   return assignments;
+}
+
+void WeightedEvenAssignment::ValidateWeights() const {
+  // Validate the size of the weights.
+  if (weights_.size() != static_cast<std::size_t>(num_tasks_)) {
+    throw std::invalid_argument(
+        absl::StrFormat("The number of task weights does not match the number "
+                        "of tasks: %d vs. %d.",
+                        weights_.size(), num_tasks_));
+  }
 }
 
 }  // namespace assignment

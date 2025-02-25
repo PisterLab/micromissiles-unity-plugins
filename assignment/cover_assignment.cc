@@ -1,6 +1,5 @@
 #include "assignment/cover_assignment.h"
 
-#include <stdexcept>
 #include <vector>
 
 #include "assignment/assignment.h"
