@@ -74,7 +74,7 @@ std::vector<Assignment::AssignmentItem> CoverAssignment::Assign() const {
     return std::vector<AssignmentItem>();
   }
 
-  // Record the assignemnts.
+  // Record the assignments.
   std::vector<AssignmentItem> assignments;
   assignments.reserve(num_agents_);
   for (int i = 0; i < num_agents_; ++i) {
