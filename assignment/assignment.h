@@ -15,7 +15,7 @@ class Assignment {
 
   // The assignment cost matrix should be a matrix of dimensions num_agents x
   // num_tasks.
-  Assignment(int num_agents, int num_tasks,
+  Assignment(const int num_agents, const int num_tasks,
              std::vector<std::vector<double>> costs)
       : num_agents_(num_agents),
         num_tasks_(num_tasks),

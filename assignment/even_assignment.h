@@ -12,7 +12,7 @@ namespace assignment {
 // Even assignment.
 class EvenAssignment : public Assignment {
  public:
-  EvenAssignment(int num_agents, int num_tasks,
+  EvenAssignment(const int num_agents, const int num_tasks,
                  std::vector<std::vector<double>> costs)
       : Assignment(num_agents, num_tasks, std::move(costs)) {}
 
