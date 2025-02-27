@@ -1,5 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
+exports_files(["assignment.def"])
+
 cc_library(
     name = "assignment",
     srcs = ["assignment.cc"],

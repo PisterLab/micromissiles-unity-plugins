@@ -5,11 +5,23 @@ package(default_visibility = ["//visibility:public"])
 cc_shared_library(
     name = "assignment",
     deps = ["//assignment:assignment_plugin"],
+    additional_linker_inputs = select({
+        "@platforms//os:windows": ["//assignment:assignment.def"],
+        "//conditions:default": [],
+    }),
+    win_def_file = select({
+        "@platforms//os:windows": "//assignment:assignment.def",
+        "//conditions:default": None,
+    }),
 )
 
 cc_shared_library(
     name = "example",
     deps = ["//example:example_plugin"],
+    features = select({
+        "@platforms//os:windows": ["windows_export_all_symbols"],
+        "//conditions:default": [],
+    }),
 )
 
 pkg_tar(
