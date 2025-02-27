@@ -11,39 +11,38 @@ This repository contains plugins for the micromissiles simulator found here: htt
 
 ## Installing Bazel
 
-This project requires Bazel version 8.0.0. 
+This project requires Bazel version 8.0.0.
 
-For detailed installation instructions for your platform (Windows, macOS, Linux), please refer to the official Bazel documentation:
-https://bazel.build/install
+For detailed installation instructions for your platform (Windows, macOS, Linux), please refer to the official Bazel documentation: https://bazel.build/install.
 
 A few important notes:
 
-- Bazelisk is recommended as it automatically manages Bazel versions based on the `.bazelversion` file
-- On Windows, you'll need additional components like MSYS2 and Visual Studio Build Tools
-- You can verify your installation with `bazel version`
+- Bazelisk is recommended as it automatically manages Bazel versions based on the `.bazelversion` file.
+- On Windows, you will need additional components like MSYS2 and Visual Studio Build Tools.
+- You can verify your installation with `bazel version`.
 
 ## Building the Project
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone https://github.com/PisterLab/micromissiles-unity-plugins.git
    cd micromissiles-unity-plugins
    ```
 
 2. Build all plugins:
-   ```
+   ```bash
    bazel build //...
    ```
 
 3. Build specific plugins:
-   ```
-   # Build the assignment plugin
+   ```bash
+   # Build the assignment plugin.
    bazel build //:assignment
-   
-   # Build the example plugin
+
+   # Build the example plugin.
    bazel build //:example
-   
-   # Build and package all plugins into a tarball
+
+   # Build and package all plugins into a tarball.
    bazel build //:plugins
    ```
 
@@ -54,9 +53,9 @@ A few important notes:
 
 ## Project Structure
 
-- `/assignment`: Contains the assignment plugin implementation
-- `/example`: Contains an example plugin implementation
-- `/base`: Common base utilities
+- `/assignment`: Contains the assignment plugin implementation.
+- `/example`: Contains an example plugin implementation.
+- `/base`: Common base utilities.
 
 ## Output Files
 
@@ -66,8 +65,6 @@ After building, the compiled shared libraries can be found in the `bazel-bin` di
 
 To use these plugins with the micromissiles Unity project:
 
-1. Build the plugins using the instructions above
-2. Extract the contents of `bazel-bin/plugins.tar.gz`
-3. Copy the shared libraries (.dll, .so, or .dylib files) to the appropriate plugins directory in the Unity project
-
-
+1. Build the plugins using the instructions above.
+2. Extract the contents of `bazel-bin/plugins.tar.gz`.
+3. Copy the shared libraries (`.dll`, `.dylib`, or `.so` files) to the appropriate plugins directory in the Unity project.
