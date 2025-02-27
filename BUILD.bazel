@@ -4,7 +4,6 @@ package(default_visibility = ["//visibility:public"])
 
 cc_shared_library(
     name = "assignment",
-    deps = ["//assignment:assignment_plugin"],
     additional_linker_inputs = select({
         "@platforms//os:windows": ["//assignment:assignment.def"],
         "//conditions:default": [],
@@ -13,22 +12,20 @@ cc_shared_library(
         "@platforms//os:windows": "//assignment:assignment.def",
         "//conditions:default": None,
     }),
+    deps = ["//assignment:assignment_plugin"],
 )
 
 cc_shared_library(
     name = "example",
-    deps = ["//example:example_plugin"],
     features = select({
         "@platforms//os:windows": ["windows_export_all_symbols"],
         "//conditions:default": [],
     }),
+    deps = ["//example:example_plugin"],
 )
 
 pkg_tar(
     name = "plugins",
-    srcs = [
-        ":assignment",
-        ":example",
-    ],
+    srcs = [":assignment"],
     extension = ".tar.gz",
 )
