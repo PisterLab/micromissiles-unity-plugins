@@ -68,3 +68,10 @@ To use these plugins with the micromissiles Unity project:
 1. Build the plugins using the instructions above.
 2. Extract the contents of `bazel-bin/plugins.tar.gz`.
 3. Copy the shared libraries (`.dll`, `.dylib`, or `.so` files) to the appropriate plugins directory in the Unity project.
+
+### Ubuntu
+
+Ensure that the plugin is compiled on the same Ubuntu version (e.g., 2022.04) on which the Unity project will run to maintain compability with the `glibc` and `libstdc++` standard libraries.
+Unity will fail load the plugin if the plugin was compiled against a newer version of `glibc` or `libstdc++` that is not present on the current system.
+
+Currently, the plugin is compatible with Ubuntu 22.04 or newer.
