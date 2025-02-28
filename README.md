@@ -44,6 +44,9 @@ A few important notes:
 
    # Build and package all plugins into a tarball.
    bazel build //:plugins
+
+   # Build and package all plugins into a tarball with optimization enabled.
+   bazel build -c opt //:plugins
    ```
 
 4. Run tests:
@@ -65,7 +68,7 @@ After building, the compiled shared libraries can be found in the `bazel-bin` di
 
 To use these plugins with the micromissiles Unity project:
 
-1. Build the plugins using the instructions above.
+1. Build the plugins using the instructions above. Ensure that you have optimization enabled to reduce the shared library size.
 2. Extract the contents of `bazel-bin/plugins.tar.gz`.
 3. Copy the shared libraries (`.dll`, `.dylib`, or `.so` files) to the appropriate plugins directory in the Unity project.
 
