@@ -1,5 +1,8 @@
 # Plugins for micromissiles-unity
 
+> [!WARNING]
+> This repository is **deprecated** because the plugins have been moved to a subdirectory of the micromissiles simulator repository: https://github.com/PisterLab/micromissiles-unity/tree/master/plugins.
+
 This repository contains plugins for the micromissiles simulator found here: https://github.com/PisterLab/micromissiles-unity.
 
 ## Prerequisites
@@ -25,7 +28,7 @@ A few important notes:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/PisterLab/micromissiles-unity-plugins.git
+   git clone git@github.com:PisterLab/micromissiles-unity-plugins.git
    cd micromissiles-unity-plugins
    ```
 
